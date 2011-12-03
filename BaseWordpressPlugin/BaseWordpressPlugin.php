@@ -31,14 +31,17 @@ class BaseWordpressPlugin {
 		$this->options = array(
 			'plugin_name' => 'BaseWordpressPlugin',
 			'plugin_userlevel' => 'manage_options',
+			'plugin_menutype' => 'index.php',
 			'plugin_pageslug' => 'basewordpressplugin-settings',
-			'plugin_dir' => str_replace(ABSPATH,(site_url().'/'),dirname(__FILE__))
+			'plugin_dir' => str_replace(ABSPATH,(site_url().'/'),dirname(__FILE__)),
+			'plugin_basename' => str_replace(ABSPATH.'wp-content/plugins/','',__FILE__)
 		);
 	}
 	
 	private function plugin_hooks(){
 		register_activation_hook(__FILE__, array(&$this, 'plugin_activation'));
 		register_deactivation_hook(__FILE__, array(&$this, 'plugin_desactivation'));
+		register_uninstall_hook(__FILE__, array(&$this, 'plugin_uninstall'));
 	}
 	
 	private function admin_hooks(){
@@ -55,6 +58,10 @@ class BaseWordpressPlugin {
 	private function plugin_desactivation() {
 
 	}
+	// Lancé à la désinstallation du plugin
+	private function plugin_uninstall() {
+
+	}
 	
 	// Ajout de JS & CSS
     public function admin_css_js() {
@@ -64,11 +71,11 @@ class BaseWordpressPlugin {
         	echo "<script src='".$this->options['plugin_dir']. '/js/events.js'."'></script>\n";
 		}
     }
-	
+
 	// Ajout d'un lien dans le menu
 	function admin_menu() {
 	    add_submenu_page(
-			'index.php',
+			$this->options['plugin_menutype'],
             $this->options['plugin_name'] . ' Settings', // Title de la page
             $this->options['plugin_name'], // Titre du menu
             $this->options['plugin_userlevel'], // Niveau minimal
@@ -79,10 +86,6 @@ class BaseWordpressPlugin {
 	
 	// Page d'administration du plugin
 	function admin_settings(){
-		// Droits utilisateurs
-		if (!current_user_can($this->options['plugin_userlevel']))
-	        wp_die('You do not have sufficient permissions to access this page.');
-	
 		$content = '';
 	    // Le contenu, page d'administration du plugin, ou autre, va ici.
 		$content .= '<div class="wrap"><h2>'.$this->options['plugin_name'].'</h2>';
