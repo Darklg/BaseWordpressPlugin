@@ -39,6 +39,7 @@ class BaseWordpressPlugin {
 	}
 	
 	private function plugin_hooks(){
+		// Marche pas pour le moment :3
 		register_activation_hook(__FILE__, array(&$this, 'plugin_activation'));
 		register_deactivation_hook(__FILE__, array(&$this, 'plugin_desactivation'));
 		register_uninstall_hook(__FILE__, array(&$this, 'plugin_uninstall'));
@@ -51,16 +52,14 @@ class BaseWordpressPlugin {
 	
 	// Lancé à l'activation du plugin
 	private function plugin_activation() {
-
 	}
 
 	// Lancé à la désactivation du plugin
 	private function plugin_desactivation() {
-
 	}
+	
 	// Lancé à la désinstallation du plugin
 	private function plugin_uninstall() {
-
 	}
 	
 	// Ajout de JS & CSS
