@@ -18,9 +18,6 @@ class BaseWordpressPlugin {
         // Recuperation des options
         $this->set_options();
 
-        // Lancement des fonctions publiques
-        $this->plugin_hooks();
-
         // Lancement des fonctions spécifiques à l'admin
         if (is_admin()) {
             $this->admin_hooks();
@@ -38,30 +35,23 @@ class BaseWordpressPlugin {
         );
     }
 
-    private function plugin_hooks() {
-        // Marche pas pour le moment :3
-        register_activation_hook(__FILE__, array(&$this, 'plugin_activation'));
-        register_deactivation_hook(__FILE__, array(&$this, 'plugin_desactivation'));
-        register_uninstall_hook(__FILE__, array(&$this, 'plugin_uninstall'));
-    }
-
     private function admin_hooks() {
         add_action('admin_menu', array(&$this, 'admin_menu'));
         add_action('admin_head', array(&$this, 'admin_css_js'));
     }
 
     // Lancé à l'activation du plugin
-    private function plugin_activation() {
-        
+    public function plugin_activation() {
+	
     }
 
     // Lancé à la désactivation du plugin
-    private function plugin_desactivation() {
+    public function plugin_desactivation() {
         
     }
 
     // Lancé à la désinstallation du plugin
-    private function plugin_uninstall() {
+    public function plugin_uninstall() {
         
     }
 
@@ -105,4 +95,9 @@ class BaseWordpressPlugin {
 
 }
 
-new BaseWordpressPlugin();
+$BaseWordpressPlugin = new BaseWordpressPlugin();
+
+// Seule façon pour accéder aux fonctions d'activation. Pour le moment. Hélas. :'(
+register_activation_hook(__FILE__, array(&$BaseWordpressPlugin, 'plugin_activation'));
+register_deactivation_hook(__FILE__, array(&$BaseWordpressPlugin, 'plugin_desactivation'));
+register_uninstall_hook(__FILE__, array(&$BaseWordpressPlugin, 'plugin_uninstall'));
