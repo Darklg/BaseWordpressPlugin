@@ -42,17 +42,17 @@ class BaseWordpressPlugin {
 
     // Lancé à l'activation du plugin
     public function plugin_activation() {
-	
+
     }
 
     // Lancé à la désactivation du plugin
     public function plugin_desactivation() {
-        
+
     }
 
     // Lancé à la désinstallation du plugin
     public function plugin_uninstall() {
-        
+
     }
 
     // Ajout de JS & CSS
@@ -82,18 +82,18 @@ class BaseWordpressPlugin {
         $content .= '<div class="wrap"><h2>' . $this->options['plugin_name'] . '</h2>';
         if (isset($_POST['plugin_ok'])) {
 			if (!wp_verify_nonce($_POST['basewordpressplugin-noncefield'],'basewordpressplugin-nonceaction') ) {
-				$content .= '<p>Malheur, le nonce n\'est pas vérifié !</p>';
+				$content .= '<p>'.__("Malheur, le nonce n'est pas vérifié !").'</p>';
 			}
 			else {
 	            // update, etc.
-	            $content .= '<p>Succès de la mise à jour !</p>';
+	            $content .= '<p>'.__('Succès de la mise à jour !').'</p>';
 			}
-			
+
 
         }
         $content .= '<form action="" method="post">
             <ul>
-                <li><input class="button-primary" name="plugin_ok" value="Update" type="submit" /></li>
+                <li><input class="button-primary" name="plugin_ok" value="'.__('Update').'" type="submit" /></li>
             </ul>
 			'.wp_nonce_field('basewordpressplugin-nonceaction','basewordpressplugin-noncefield',1,0).'
         </form>';
